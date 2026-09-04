@@ -14,17 +14,26 @@
   <script>
     (async()=>{
       try{
-        const response=await fetch('./app.html?v=20260905-1',{cache:'no-store'});
+        const response=await fetch('./app.html?v=20260905-2',{cache:'no-store'});
         if(!response.ok)throw new Error('Unable to load Petopia');
-        let html=await response.text();
-        html=html.replace('</head>','<link rel="stylesheet" href="./mobile-fix.css?v=20260905-1"></head>');
-        html=html.replace('</body>','<script src="./mobile-fix.js?v=20260905-1"><\\/script></body>');
+        const html=await response.text();
         document.open();
         document.write(html);
         document.close();
+
+        const css=document.createElement('link');
+        css.rel='stylesheet';
+        css.href='./mobile-fix.css?v=20260905-2';
+        document.head.appendChild(css);
+
+        const js=document.createElement('script');
+        js.src='./mobile-fix.js?v=20260905-2';
+        js.defer=true;
+        document.body.appendChild(js);
       }catch(error){
         console.error(error);
-        document.getElementById('loader').innerHTML='<div><div class="loaderMark">🐾</div><b>Petopia could not load</b><p>Please refresh the page and try again.</p></div>';
+        const loader=document.getElementById('loader');
+        if(loader)loader.innerHTML='<div><div class="loaderMark">🐾</div><b>Petopia could not load</b><p>Please refresh the page and try again.</p></div>';
       }
     })();
   </script>
