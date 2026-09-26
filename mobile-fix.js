@@ -3,7 +3,7 @@
   const btn = document.getElementById('menuBtn');
   if (!nav || !btn) return;
 
-  const isThai = () => (localStorage.getItem('petopia_lang') || 'en') === 'th';
+  const isThai = () => document.documentElement.lang === 'th';
 
   function setMenu(open) {
     nav.classList.toggle('menuopen', open);
@@ -15,6 +15,7 @@
   function closeMenu() {
     setMenu(false);
   }
+  window.petopiaCloseMenu = closeMenu;
 
   btn.type = 'button';
   btn.setAttribute('aria-controls', 'primaryNav');
@@ -40,7 +41,10 @@
   });
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeMenu();
+    if (event.key === 'Escape' && nav.classList.contains('menuopen')) {
+      closeMenu();
+      btn.focus();
+    }
   });
 
   window.addEventListener('resize', () => {
