@@ -1,0 +1,16 @@
+name: Petopia checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check core.js && node --check quality.js && node --check app.js && node --check mobile-fix.js
+      - run: node --test tests/core.test.cjs
